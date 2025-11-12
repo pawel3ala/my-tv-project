@@ -5,9 +5,7 @@ import { type ComponentProps } from 'react';
 import { Platform, Pressable } from 'react-native';
 
 const openBrowserAsync =
-  Platform.isTV && Platform.OS === 'ios'
-    ? async () => {}
-    : require('expo-web-browser').openBrowserAsync;
+  Platform.isTV && Platform.OS === 'ios' ? async () => {} : require('expo-web-browser').openBrowserAsync;
 
 type Props = Omit<ComponentProps<typeof Link>, 'href'> & {
   href: string;
@@ -19,7 +17,7 @@ function ExternalLinkMobile({ href, ...rest }: Props) {
       target="_blank"
       {...rest}
       href={href as Href}
-      onPress={async (event) => {
+      onPress={async event => {
         if (Platform.OS !== 'web') {
           // Prevent the default behavior of linking to the default browser on native.
           event.preventDefault();
@@ -34,13 +32,10 @@ function ExternalLinkMobile({ href, ...rest }: Props) {
 function ExternalLinkTV({ href, ...rest }: Props) {
   return (
     <Pressable
-      onPress={() =>
-        Linking.openURL(href).catch((reason) => alert(`${reason}`))
-      }
+      onPress={() => Linking.openURL(href).catch(reason => alert(`${reason}`))}
       style={({ pressed, focused }) => ({
-        opacity: pressed || focused ? 0.6 : 1.0,
-      })}
-    >
+        opacity: pressed || focused ? 0.6 : 1.0
+      })}>
       {rest.children}
     </Pressable>
   );
