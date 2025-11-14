@@ -11,16 +11,16 @@ export default function HomeScreen() {
   const { data, loading, error } = useGetData();
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <ActivityIndicator testID="loading-indicator" size="large" color="#0000ff" />;
   }
 
   if (error) {
-    return <Text>Error: {error.message}</Text>;
+    return <Text testID="error-message">Error: {error.message}</Text>;
   }
 
   return (
-    <View style={styles.container}>
-      <FlatList data={data} renderItem={renderItem} keyExtractor={item => item.id} />
+    <View style={styles.container} testID="home-screen-container">
+      <FlatList testID="flat-list" data={data} renderItem={renderItem} keyExtractor={item => item.id} />
     </View>
   );
 }

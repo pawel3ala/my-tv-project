@@ -20,7 +20,7 @@ const ListItemComponent = ({ item: { id, title, thumbnail } }: { item: Item }) =
   }, []);
 
   return (
-    <Pressable onPress={handleOnPress} style={styles.container}>
+    <Pressable onPress={handleOnPress} style={styles.container} testID="list-item-container">
       {({ focused }) => (
         <View style={styles.subContainer}>
           <Image
