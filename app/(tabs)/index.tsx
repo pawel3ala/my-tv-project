@@ -1,43 +1,25 @@
-import { Image, StyleSheet, Button } from 'react-native';
+import { StyleSheet, FlatList, View, ListRenderItem } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedView } from '@/components/ThemedView';
 import { useScale } from '@/hooks/useScale';
-import { router } from 'expo-router';
+import mockedData, { Item } from '@/assets/mockedData';
+import ListItemComponent from '@/components/list-item/list-item.component';
 
 export default function HomeScreen() {
   const styles = useHomeScreenStyles();
+  const renderItem: ListRenderItem<Item> = ({ item }: { item: Item }) => <ListItemComponent item={item} />;
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}>
-      <ThemedView style={styles.titleContainer}>
-        <HelloWave />
-        <Button title="Go to details" onPress={() => router.push('/details')} />
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <FlatList data={mockedData.items} renderItem={renderItem} keyExtractor={item => item.id} />
+    </View>
   );
 }
-
 const useHomeScreenStyles = function () {
   const scale = useScale();
   return StyleSheet.create({
-    titleContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8 * scale
-    },
-    stepContainer: {
-      gap: 8 * scale,
-      marginBottom: 8 * scale
-    },
-    reactLogo: {
-      height: 178 * scale,
-      width: 290 * scale,
-      bottom: 0,
-      left: 0,
-      position: 'absolute'
+    container: {
+      flex: 1,
+      padding: 8 * scale
     }
   });
 };

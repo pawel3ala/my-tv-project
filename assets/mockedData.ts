@@ -2,7 +2,7 @@ type MockedData = {
   items: Item[];
 };
 
-type Item = {
+export type Item = {
   id: string;
   title: string;
   description: string;
