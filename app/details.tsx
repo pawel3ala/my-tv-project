@@ -1,36 +1,51 @@
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useScale } from '@/hooks/useScale';
-import mockedData from '@/assets/mockedData';
+import { Item } from '@/assets/mockedData';
 import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEvent } from 'expo';
+import useGetData from '@/hooks/use-get-data.hook';
 
 export default function DetailsScreen() {
   const styles = useDetailsScreenStyles();
-  const params = useLocalSearchParams();
+  const { itemId } = useLocalSearchParams<{ itemId: Item['id'] }>();
+  const { getDataFromId, loading, error } = useGetData();
+  const item = getDataFromId(itemId);
 
-  const itemId = params.itemId as string;
-  const item = mockedData.items.find(i => i.id === itemId)!;
-
-  const player = useVideoPlayer(item?.streamUrl || '', player => {
+  const player = useVideoPlayer(item?.streamUrl ?? '', player => {
     player.loop = true;
-    if (item?.streamUrl) {
+    if (streamUrl) {
       player.play();
     }
   });
 
-  // const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
-  // const { status, error } = useEvent(player, 'statusChange', { status: player.status });
+  const { error: playerError } = useEvent(player, 'statusChange', { status: player.status });
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
+
+  if (!item) {
+    return <Text>Item not found</Text>;
+  }
+
+  const { description, duration, streamUrl, title } = item;
 
   return (
     <View style={styles.container}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">{item?.title || 'Details'}</ThemedText>
+        <ThemedText type="title">{title || 'Details'}</ThemedText>
       </ThemedView>
-      <ThemedText>{item.description}</ThemedText>
-      <ThemedText>Duration: {item.duration}s</ThemedText>
+      <ThemedText>{description}</ThemedText>
+      <ThemedText>Duration: {duration}s</ThemedText>
+      {playerError && <ThemedText>Error: {playerError.message}</ThemedText>}
       <VideoView style={styles.video} player={player} tvFocusable={true} />
     </View>
   );
