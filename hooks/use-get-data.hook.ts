@@ -18,6 +18,7 @@ const useGetData = () => {
         setData(mockedData.items);
       } else {
         setError(new Error('Error fetching data'));
+        // TODO: send error to Sentry/Crashlitics
       }
       setLoading(false);
     }, DELAY_IN_MS);

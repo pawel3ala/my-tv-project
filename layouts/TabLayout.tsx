@@ -13,10 +13,6 @@ export default function TabLayout() {
         <Label>Home</Label>
         <Icon sf="house" />
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="explore">
-        <Label>Explore</Label>
-        <Icon sf="atom" />
-      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="tv_focus">
         <Label>TV demo</Label>
         <Icon sf="tv.fill" />

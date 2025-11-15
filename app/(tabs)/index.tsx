@@ -4,10 +4,11 @@ import { useScale } from '@/hooks/useScale';
 import { Item } from '@/assets/mockedData';
 import ListItemComponent from '@/components/list-item/list-item.component';
 import useGetData from '@/hooks/use-get-data.hook';
+import { useCallback } from 'react';
 
 export default function HomeScreen() {
   const styles = useHomeScreenStyles();
-  const renderItem: ListRenderItem<Item> = ({ item }: { item: Item }) => <ListItemComponent item={item} />;
+  const renderItem: ListRenderItem<Item> = useCallback(({ item }) => <ListItemComponent item={item} />, []);
   const { data, loading, error } = useGetData();
 
   if (loading) {
