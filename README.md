@@ -1,8 +1,5 @@
 # Expo Router TV demo 👋
 
-![Apple TV screen shot](https://github.com/douglowder/examples/assets/6577821/a881466f-a7a0-4c66-b1fc-33235c466997)
-![Android TV screen shot](https://github.com/douglowder/examples/assets/6577821/815c8e01-8275-4cc1-bd57-b9c8bce1fb02)
-
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 This project uses
@@ -54,26 +51,28 @@ Deploy on all platforms with Expo Application Services (EAS).
 
 This project includes an [example Metro configuration](./metro.config.js) that allows Metro to resolve application source files with TV-specific code, indicated by specific file extensions (`*.ios.tv.tsx`, `*.android.tv.tsx`, `*.tv.tsx`).
 
-## Get a fresh project
+## Info
 
-When you're ready, run:
+1. Project scafolding & boilerplate code - https://docs.expo.dev/guides/building-for-tv/
 
-```bash
-npm run reset-project
+2. In expo project, prettier and linter is not fully setup out of the box, so I took care of it
+
+3. When it comes to `Image` component I decided to use `expo-image` instead of the one available in core `react-native` library. The former supports image caching, the latter doesn't
+
+4. I burned quite a bit of time figuring out why I am not able to render an image - it has turned out that my Android TV simulator didn't have internet connection
+That's not all, after restoring wifi I still was not able to render any image or run any video, I was getting w weird error
+
+```
+LOG  error {"error": "Failed to load resource
+There was 1 root cause:
+javax.net.ssl.SSLHandshakeException(Chain validation failed)", "target": 88}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Took some time to identify that my date on simulator was not correct, which caused the SSL certificate to be expired, hence I was unable to connect with any server to get any data
+I had to wipe out all the simulator data and restore factory default settings
 
-## Learn more
+5. Extracted data fetching part to a hook (that also simulates data fetching error)
 
-To learn more about developing your project with Expo, look at the following resources:
+## Unfinished tasks
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/learn): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+I didn't had a chance to fully dig into how to properly do an e2e test utilising a d-pad on Android TV
